@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuda - Sistema Patrimonial CEAD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .code-block {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .file-structure {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 1rem;
+            margin: 2rem 0 1rem 0;
+        }
+        
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="bi bi-question-circle me-3"></i>Central de Ajuda
+                    </h1>
+                    <p class="lead mb-0">Guia completo do Sistema de Controle Patrimonial CEAD</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="index.php" class="btn btn-light btn-lg">
+                        <i class="bi bi-house me-2"></i>Voltar ao Sistema
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Navegação Rápida -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-compass me-2"></i>Navegação Rápida</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <a href="#estrutura" class="btn btn-outline-primary w-100">Estrutura</a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="#cadastro" class="btn btn-outline-success w-100">Cadastro</a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="#importacao" class="btn btn-outline-info w-100">Importação</a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="#backup" class="btn btn-outline-warning w-100">Backup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="row">
+            <div class="col-lg-3">
+                <!-- Menu Lateral -->
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="bi bi-list me-2"></i>Sumário</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <a href="#introducao" class="list-group-item list-group-item-action">Introdução</a>
+                            <a href="#estrutura" class="list-group-item list-group-item-action">Estrutura do Sistema</a>
+                            <a href="#login" class="list-group-item list-group-item-action">Primeiro Acesso</a>
+                            <a href="#cadastro" class="list-group-item list-group-item-action">Cadastro de Bens</a>
+                            <a href="#importacao" class="list-group-item list-group-item-action">Importação em Lote</a>
+                            <a href="#gestao" class="list-group-item list-group-item-action">Gestão de Bens</a>
+                            <a href="#backup" class="list-group-item list-group-item-action">Backup e Limpeza</a>
+                            <a href="#troubleshooting" class="list-group-item list-group-item-action">Solução de Problemas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <!-- Conteúdo -->
+                
+                <!-- Introdução -->
+                <section id="introducao" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-info-circle me-2"></i>Introdução ao Sistema</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>O <strong>Sistema de Controle Patrimonial CEAD</strong> é uma solução completa para gerenciamento de bens patrimoniais, desenvolvido para atender às necessidades específicas do centro educacional.</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon">
+                                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                                    <h5>Seguro</h5>
+                                    <p class="text-muted">Sistema com autenticação e controle de acesso</p>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon">
+                                        <i class="bi bi-lightning-charge"></i>
+                                    </div>
+                                    <h5>Rápido</h5>
+                                    <p class="text-muted">Interface otimizada e processamento eficiente</p>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon">
+                                        <i class="bi bi-graph-up"></i>
+                                    </div>
+                                    <h5>Inteligente</h5>
+                                    <p class="text-muted">Relatórios e estatísticas em tempo real</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Estrutura do Sistema -->
+                <section id="estrutura" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-folder me-2"></i>Estrutura do Sistema</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Estrutura de Diretórios</h4>
+                            <div class="file-structure">
+sistema_patrimonial/<br>
+├── <strong>index.php</strong>                    # Página inicial<br>
+├── <strong>login.php</strong>                   # Página de login<br>
+├── <strong>sistema_crud.php</strong>            # Sistema principal de gestão<br>
+├── <strong>importar.php</strong>                # Importação de dados CSV<br>
+├── <strong>backup_limpeza.php</strong>          # Backup e limpeza do sistema<br>
+├── <strong>ajuda.html</strong>                  # Esta página de ajuda<br>
+├── <strong>criar_admin.php</strong>             # Criação de usuário admin<br>
+├── <strong>status_sistema.php</strong>          # Status do sistema<br>
+├── <strong>includes/</strong>                   # Arquivos de configuração<br>
+│   ├── <strong>init.php</strong>                # Inicialização do sistema<br>
+│   ├── <strong>config.php</strong>              # Configurações gerais<br>
+│   ├── <strong>database.php</strong>            # Conexão com banco de dados<br>
+│   └── <strong>auth.php</strong>                # Sistema de autenticação<br>
+├── <strong>api/</strong>                        # API do sistema<br>
+│   └── <strong>bens.php</strong>                # Endpoint para bens<br>
+├── <strong>uploads/</strong>                    # Uploads do sistema<br>
+│   └── <strong>imagens/</strong>                # Imagens dos bens<br>
+└── <strong>backups/</strong>                    # Backups automáticos<br>
+                            </div>
+
+                            <h4 class="section-title mt-4">Estrutura do Banco de Dados</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tabela</th>
+                                            <th>Descrição</th>
+                                            <th>Campos Principais</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>bens</strong></td>
+                                            <td>Armazena todos os bens patrimoniais</td>
+                                            <td>id, numero_patrimonio, descricao, localidade, status, imagem</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>usuarios</strong></td>
+                                            <td>Usuários do sistema</td>
+                                            <td>id, nome, email, senha, tipo, ativo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Primeiro Acesso -->
+                <section id="login" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-key me-2"></i>Primeiro Acesso e Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Configuração Inicial</h4>
+                            <div class="mb-4">
+                                <span class="step-number">1</span>
+                                <strong>Acesse o sistema pela primeira vez</strong>
+                                <p class="mt-2">URL: <code>http://localhost/sistema_patrimonial/</code></p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">2</span>
+                                <strong>Crie o usuário administrador</strong>
+                                <p class="mt-2">Acesse: <code>http://localhost/sistema_patrimonial/criar_admin.php</code></p>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Execute este passo apenas uma vez para criar o primeiro usuário.
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">3</span>
+                                <strong>Faça login no sistema</strong>
+                                <p class="mt-2">Use as credenciais criadas no passo anterior.</p>
+                            </div>
+
+                            <h4 class="section-title">Tipos de Usuário</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card border-success">
+                                        <div class="card-body">
+                                            <h5><i class="bi bi-person-check me-2"></i>Administrador</h5>
+                                            <ul>
+                                                <li>Acesso completo ao sistema</li>
+                                                <li>Gestão de bens patrimoniais</li>
+                                                <li>Importação de dados</li>
+                                                <li>Backup e limpeza</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-primary">
+                                        <div class="card-body">
+                                            <h5><i class="bi bi-person me-2"></i>Usuário Comum</h5>
+                                            <ul>
+                                                <li>Consulta de bens</li>
+                                                <li>Visualização de relatórios</li>
+                                                <li>Acesso limitado</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cadastro de Bens -->
+                <section id="cadastro" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Cadastro de Bens Patrimoniais</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Cadastro Individual</h4>
+                            <div class="mb-4">
+                                <span class="step-number">1</span>
+                                <strong>Acesse a gestão de bens</strong>
+                                <p class="mt-2">No menu principal, clique em <strong>"Gestão"</strong> ou acesse diretamente: <code>sistema_crud.php</code></p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">2</span>
+                                <strong>Clique em "Cadastrar Bem"</strong>
+                                <p class="mt-2">Selecione a opção no menu de navegação.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">3</span>
+                                <strong>Preencha os campos obrigatórios</strong>
+                                <div class="table-responsive mt-2">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Campo</th>
+                                                <th>Obrigatório</th>
+                                                <th>Descrição</th>
+                                                <th>Exemplo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Número do Patrimônio</strong></td>
+                                                <td><span class="badge bg-danger">Sim</span></td>
+                                                <td>Identificador único do bem</td>
+                                                <td><code>5500/2023</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Descrição</td>
+                                                <td><span class="badge bg-warning">Opcional</span></td>
+                                                <td>Descrição do item</td>
+                                                <td><code>Computador Dell i5</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Localidade</td>
+                                                <td><span class="badge bg-warning">Opcional</span></td>
+                                                <td>Local onde o bem se encontra</td>
+                                                <td><code>Sala 101 - Bloco A</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Status</td>
+                                                <td><span class="badge bg-success">Automático</span></td>
+                                                <td>Situação do bem</td>
+                                                <td><code>Localizado / Pendente</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Imagem</td>
+                                                <td><span class="badge bg-warning">Opcional</span></td>
+                                                <td>Foto do bem (até 5MB)</td>
+                                                <td><code>JPG, PNG, GIF</code></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4 class="section-title">Upload de Imagens</h4>
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Formatos suportados:</strong> JPG, PNG, GIF<br>
+                                <strong>Tamanho máximo:</strong> 5MB<br>
+                                <strong>Redimensionamento automático:</strong> As imagens são redimensionadas para 1200x1200 pixels
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Importação em Lote -->
+                <section id="importacao" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-upload me-2"></i>Importação em Lote via CSV</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Estrutura do Arquivo CSV</h4>
+                            <p>O sistema aceita arquivos CSV com a seguinte estrutura:</p>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Coluna</th>
+                                            <th>Campo</th>
+                                            <th>Obrigatório</th>
+                                            <th>Descrição</th>
+                                            <th>Exemplo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>A</td>
+                                            <td><strong>unidade_gestora</strong></td>
+                                            <td>Não</td>
+                                            <td>Unidade gestora do bem</td>
+                                            <td><code>CEAD</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B</td>
+                                            <td><strong>localidade</strong></td>
+                                            <td>Não</td>
+                                            <td>Local onde o bem se encontra</td>
+                                            <td><code>Sala 101</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>C</td>
+                                            <td><strong>responsavel_localidade</strong></td>
+                                            <td>Não</td>
+                                            <td>Responsável pelo bem</td>
+                                            <td><code>João Silva</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>D</td>
+                                            <td><strong>numero_patrimonio</strong></td>
+                                            <td><strong>SIM</strong></td>
+                                            <td>Número único de patrimônio</td>
+                                            <td><code>5500/2023</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>E</td>
+                                            <td><strong>descricao</strong></td>
+                                            <td>Não</td>
+                                            <td>Descrição do bem</td>
+                                            <td><code>Computador Dell</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 class="section-title mt-4">Exemplo de Arquivo CSV</h4>
+                            <div class="code-block">
+unidade_gestora,localidade,responsavel_localidade,numero_patrimonio,descricao<br>
+CEAD,Sala 101,João Silva,5500/2023,Computador Dell i5<br>
+CEAD,Sala 102,Maria Santos,5501/2023,Projetor Epson<br>
+CEAD,Auditório,Pedro Costa,5502/2023,Mesa de Reunião<br>
+CEAD,Coordenação,Ana Oliveira,5503/2023,Ar Condicionado<br>
+                            </div>
+
+                            <h4 class="section-title mt-4">Processo de Importação</h4>
+                            <div class="mb-4">
+                                <span class="step-number">1</span>
+                                <strong>Acesse a importação</strong>
+                                <p class="mt-2">Na página inicial, clique em <strong>"Importar Dados"</strong> ou acesse: <code>importar.php</code></p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">2</span>
+                                <strong>Escolha a ação para duplicados</strong>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <div class="card border-warning">
+                                            <div class="card-body">
+                                                <h6><i class="bi bi-eye-slash me-2"></i>Ignorar Duplicados</h6>
+                                                <p class="small">Mantém os registros existentes e ignora os duplicados do CSV</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card border-info">
+                                            <div class="card-body">
+                                                <h6><i class="bi bi-arrow-clockwise me-2"></i>Sobrescrever Duplicados</h6>
+                                                <p class="small">Atualiza os registros existentes com os dados do CSV</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">3</span>
+                                <strong>Faça o upload do arquivo</strong>
+                                <p class="mt-2">Arraste o arquivo CSV ou clique para selecionar (máximo 50MB).</p>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <strong>Importante:</strong> O sistema detecta automaticamente a codificação e o delimitador do CSV (, ; ou tab).
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Gestão de Bens -->
+                <section id="gestao" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-gear me-2"></i>Gestão de Bens</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Funcionalidades do CRUD</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-primary h-100">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-search feature-icon"></i>
+                                            <h5>Consulta e Filtros</h5>
+                                            <ul class="text-start">
+                                                <li>Busca por número de patrimônio</li>
+                                                <li>Filtro por localidade</li>
+                                                <li>Filtro por status</li>
+                                                <li>Paginação inteligente</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-success h-100">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-pencil-square feature-icon"></i>
+                                            <h5>Edição</h5>
+                                            <ul class="text-start">
+                                                <li>Edição individual</li>
+                                                <li>Atualização de imagens</li>
+                                                <li>Alteração de status</li>
+                                                <li>Histórico de modificações</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-info h-100">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-eye feature-icon"></i>
+                                            <h5>Visualização</h5>
+                                            <ul class="text-start">
+                                                <li>Visualização detalhada</li>
+                                                <li>Imagens em alta qualidade</li>
+                                                <li>Informações completas</li>
+                                                <li>Datas de cadastro</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-danger h-100">
+                                        <div class="card-body text-center">
+                                            <i class="bi bi-trash feature-icon"></i>
+                                            <h5>Exclusão</h5>
+                                            <ul class="text-start">
+                                                <li>Exclusão segura</li>
+                                                <li>Confirmação obrigatória</li>
+                                                <li>Remoção de imagens</li>
+                                                <li>Backup recomendado</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="section-title">Sistema de Paginação</h4>
+                            <div class="alert alert-info">
+                                <i class="bi bi-list-ol me-2"></i>
+                                <strong>Opções de visualização:</strong> 10, 25, 50 ou 100 itens por página<br>
+                                <strong>Navegação:</strong> Próxima, anterior e por número de página<br>
+                                <strong>Contador:</strong> Exibe o total de registros e página atual
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Backup e Limpeza -->
+                <section id="backup" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-database-shield me-2"></i>Backup e Limpeza</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Sistema de Backup</h4>
+                            <div class="mb-4">
+                                <span class="step-number">1</span>
+                                <strong>Acesse o sistema de backup</strong>
+                                <p class="mt-2">No CRUD, clique em <strong>"Backup/Limpeza"</strong> ou acesse: <code>backup_limpeza.php</code></p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">2</span>
+                                <strong>Clique em "Fazer Backup Agora"</strong>
+                                <p class="mt-2">O sistema criará um arquivo SQL completo.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">3</span>
+                                <strong>Download do backup</strong>
+                                <p class="mt-2">Faça download do arquivo para manter em local seguro.</p>
+                            </div>
+
+                            <div class="alert alert-success">
+                                <i class="bi bi-folder me-2"></i>
+                                <strong>Local dos backups:</strong> <code>sistema_patrimonial/backups/</code><br>
+                                <strong>Formato:</strong> <code>backup_sistema_patrimonial_AAAA-MM-DD_HH-MM-SS.sql</code>
+                            </div>
+
+                            <h4 class="section-title">Limpeza do Banco de Dados</h4>
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <strong>ATENÇÃO:</strong> Esta ação é IRREVERSÍVEL! Sempre faça backup antes.
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="step-number">1</span>
+                                <strong>Confirmação de backup</strong>
+                                <p class="mt-2">Marque a confirmação de que fez backup.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">2</span>
+                                <strong>Digite "LIMPAR DADOS"</strong>
+                                <p class="mt-2">Confirmação por texto para evitar acidentes.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <span class="step-number">3</span>
+                                <strong>Confirmação final</strong>
+                                <p class="mt-2">Confirme novamente no popup de alerta.</p>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <i class="bi bi-shield-check me-2"></i>
+                                <strong>Segurança:</strong> A tabela de usuários NÃO é apagada para manter o acesso ao sistema.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Solução de Problemas -->
+                <section id="troubleshooting" class="mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0"><i class="bi bi-tools me-2"></i>Solução de Problemas</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="section-title">Problemas Comuns</h4>
+                            
+                            <div class="accordion" id="accordionProblemas">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#problema1">
+                                            Erro de login: "E-mail ou senha inválidos"
+                                        </button>
+                                    </h2>
+                                    <div id="problema1" class="accordion-collapse collapse show" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <strong>Solução:</strong>
+                                            <ol>
+                                                <li>Verifique se o usuário foi criado em <code>criar_admin.php</code></li>
+                                                <li>Confirme que o e-mail está correto</li>
+                                                <li>Verifique a senha digitada</li>
+                                                <li>Execute <code>criar_admin.php</code> novamente se necessário</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problema2">
+                                            Erro na importação CSV: "Não foi possível detectar o delimitador"
+                                        </button>
+                                    </h2>
+                                    <div id="problema2" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <strong>Solução:</strong>
+                                            <ol>
+                                                <li>Verifique se o arquivo é um CSV válido</li>
+                                                <li>Use delimitadores padrão: vírgula (,) ponto e vírgula (;) ou tab</li>
+                                                <li>Abra o arquivo em um editor de texto para verificar a formatação</li>
+                                                <li>Certifique-se de que há dados nas colunas</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problema3">
+                                            Imagem não carrega no cadastro
+                                        </button>
+                                    </h2>
+                                    <div id="problema3" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <strong>Solução:</strong>
+                                            <ol>
+                                                <li>Verifique o formato (JPG, PNG, GIF)</li>
+                                                <li>Confirme que o tamanho é menor que 5MB</li>
+                                                <li>Verifique permissões da pasta <code>uploads/imagens/</code></li>
+                                                <li>Tente redimensionar a imagem antes do upload</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#problema4">
+                                            Página não encontrada (404)
+                                        </button>
+                                    </h2>
+                                    <div id="problema4" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <strong>Solução:</strong>
+                                            <ol>
+                                                <li>Verifique se o arquivo existe no diretório correto</li>
+                                                <li>Confirme a URL digitada</li>
+                                                <li>Verifique as permissões do Apache</li>
+                                                <li>Execute o diagnóstico em <code>verificar_sistema.php</code></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="section-title mt-4">Suporte Técnico</h4>
+                            <div class="alert alert-warning">
+                                <i class="bi bi-telephone me-2"></i>
+                                <strong>Para mais ajuda:</strong><br>
+                                • Verifique os logs do servidor<br>
+                                • Consulte a documentação do PHP/MySQL<br>
+                                • Entre em contato com o administrador do sistema
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão Voltar ao Topo -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container text-center">
+            <p class="mb-0">Sistema de Controle Patrimonial CEAD - Versão 1.0.0</p>
+            <p class="mb-0">Desenvolvido para o Centro Educacional</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Botão voltar ao topo
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mostrar/ocultar botão voltar ao topo
+        window.addEventListener('scroll', function() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        // Ativar tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+</html>

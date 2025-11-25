@@ -1,0 +1,24 @@
+=== DEBUG POST RECEBIDO ===
+Ação: OUTRA
+ID: 2525
+Status: Localizado
+Todos os dados POST: Array
+(
+    [id] => 2525
+    [numero_patrimonio] => 001
+    [descricao] => Computador Dell
+    [unidade_gestora] => CEAD
+    [localidade] => Cead 2
+    [responsavel_localidade] => mario
+    [status] => Localizado
+    [observacoes] => TESTE
+
+--- AUDITORIA 27/10/2025 01:47 ---
+Auditor: Administrador
+Status alterado: Pendente → Localizado
+Localidade alterada: CEAD → Cead 2
+Observações: Teste
+
+)
+
+=== FIM DEBUG ===

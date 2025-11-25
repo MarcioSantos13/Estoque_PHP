@@ -1,0 +1,69 @@
+/* Estilos customizados para o sistema */
+.scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.scanner-viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.scanner-loading {
+    color: white;
+    text-align: center;
+    padding-top: 120px;
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+}
+
+.search-input-group input {
+    padding-right: 50px;
+}
+
+.search-input-group .btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn-group-responsive {
+        width: 100%;
+    }
+    
+    .btn-group-responsive .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Animações */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badges customizados */
+.badge-status {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
