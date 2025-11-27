@@ -377,13 +377,28 @@ function exportarPDF($dados) {
     exit;
 }
 
-// Função para construir query string mantendo filtros
-function buildQueryString($exclude = []) {
+// FUNÇÃO CORRIGIDA: Construir query string mantendo filtros
+function buildQueryString($nova_pagina = null) {
     $params = $_GET;
-    foreach ($exclude as $key) {
-        unset($params[$key]);
+    
+    // Remove a página atual
+    unset($params['pagina']);
+    
+    // Se foi passada uma nova página, adiciona
+    if ($nova_pagina !== null) {
+        $params['pagina'] = $nova_pagina;
     }
-    return $params ? '?' . http_build_query($params) : '';
+    
+    // Remove parâmetros de exportação
+    unset($params['exportar']);
+    
+    // Se não há parâmetros, retorna string vazia
+    if (empty($params)) {
+        return '';
+    }
+    
+    // Constrói a query string
+    return '?' . http_build_query($params);
 }
 
 // Função auxiliar para evitar erros com valores nulos
@@ -717,7 +732,7 @@ function formatarNumeroBr($numero) {
                         <ul class="pagination justify-content-end mb-0">
                             <!-- Botão Anterior -->
                             <li class="page-item <?php echo $pagina_atual <= 1 ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $pagina_atual - 1; ?>">
+                                <a class="page-link" href="<?php echo buildQueryString($pagina_atual - 1); ?>">
                                     <i class="bi bi-chevron-left"></i>
                                 </a>
                             </li>
@@ -725,7 +740,7 @@ function formatarNumeroBr($numero) {
                             <!-- Páginas -->
                             <?php for ($i = max(1, $pagina_atual - 2); $i <= min($total_paginas, $pagina_atual + 2); $i++): ?>
                                 <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
-                                    <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $i; ?>">
+                                    <a class="page-link" href="<?php echo buildQueryString($i); ?>">
                                         <span class="numero-br"><?php echo $i; ?></span>
                                     </a>
                                 </li>
@@ -733,7 +748,7 @@ function formatarNumeroBr($numero) {
                             
                             <!-- Botão Próximo -->
                             <li class="page-item <?php echo $pagina_atual >= $total_paginas ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $pagina_atual + 1; ?>">
+                                <a class="page-link" href="<?php echo buildQueryString($pagina_atual + 1); ?>">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>
@@ -832,7 +847,7 @@ function formatarNumeroBr($numero) {
                     <ul class="pagination mb-0">
                         <!-- Botão Anterior -->
                         <li class="page-item <?php echo $pagina_atual <= 1 ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $pagina_atual - 1; ?>">
+                            <a class="page-link" href="<?php echo buildQueryString($pagina_atual - 1); ?>">
                                 <i class="bi bi-chevron-left me-1"></i>Anterior
                             </a>
                         </li>
@@ -840,7 +855,7 @@ function formatarNumeroBr($numero) {
                         <!-- Páginas -->
                         <?php for ($i = max(1, $pagina_atual - 2); $i <= min($total_paginas, $pagina_atual + 2); $i++): ?>
                             <li class="page-item <?php echo $i == $pagina_atual ? 'active' : ''; ?>">
-                                <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $i; ?>">
+                                <a class="page-link" href="<?php echo buildQueryString($i); ?>">
                                     <span class="numero-br"><?php echo $i; ?></span>
                                 </a>
                             </li>
@@ -848,7 +863,7 @@ function formatarNumeroBr($numero) {
                         
                         <!-- Botão Próximo -->
                         <li class="page-item <?php echo $pagina_atual >= $total_paginas ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="<?php echo buildQueryString(['pagina']); ?>&pagina=<?php echo $pagina_atual + 1; ?>">
+                            <a class="page-link" href="<?php echo buildQueryString($pagina_atual + 1); ?>">
                                 Próximo<i class="bi bi-chevron-right ms-1"></i>
                             </a>
                         </li>
