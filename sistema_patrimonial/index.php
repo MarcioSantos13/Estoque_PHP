@@ -4,14 +4,15 @@ require_once 'includes/init.php';
 
 Auth::protegerPagina();
 
-// Função para formatar números no padrão brasileiro
+// Função para formatar números no padrão brasileiro - CORRIGIDA
 function formatarNumero($numero) {
-    return number_format($numero, 0, ',', '.');
+    $numero = $numero ?? 0; // Converte null para 0
+    return number_format(floatval($numero), 0, ',', '.');
 }
 
 // Função para formatar data no padrão brasileiro
 function formatarData($data) {
-    if (empty($data)) return 'N/A';
+    if (empty($data) || $data == '0000-00-00') return 'N/A';
     return date('d/m/Y', strtotime($data));
 }
 
@@ -25,19 +26,32 @@ function abreviarTexto($texto, $limite = 30) {
 $database = new Database();
 $db = $database->getConnection();
 
-// Contar bens
-$query_total = "SELECT COUNT(*) as total FROM bens";
-$total_count = $db->query($query_total)->fetch(PDO::FETCH_ASSOC)['total'];
+// Inicializar variáveis para evitar erros
+$total_count = 0;
+$localizados_count = 0;
+$pendentes_count = 0;
+$percentual_localizados = 0;
+$percentual_pendentes = 0;
 
-$query_localizados = "SELECT COUNT(*) as total FROM bens WHERE status = 'Localizado'";
-$localizados_count = $db->query($query_localizados)->fetch(PDO::FETCH_ASSOC)['total'];
+try {
+    // Contar bens
+    $query_total = "SELECT COUNT(*) as total FROM bens";
+    $total_count = $db->query($query_total)->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 
-$query_pendentes = "SELECT COUNT(*) as total FROM bens WHERE status = 'Pendente'";
-$pendentes_count = $db->query($query_pendentes)->fetch(PDO::FETCH_ASSOC)['total'];
+    $query_localizados = "SELECT COUNT(*) as total FROM bens WHERE status = 'Localizado'";
+    $localizados_count = $db->query($query_localizados)->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 
-// Calcular percentuais
-$percentual_localizados = $total_count > 0 ? ($localizados_count / $total_count) * 100 : 0;
-$percentual_pendentes = $total_count > 0 ? ($pendentes_count / $total_count) * 100 : 0;
+    $query_pendentes = "SELECT COUNT(*) as total FROM bens WHERE status = 'Pendente'";
+    $pendentes_count = $db->query($query_pendentes)->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+    // Calcular percentuais - CORRIGIDO
+    $percentual_localizados = $total_count > 0 ? ($localizados_count / $total_count) * 100 : 0;
+    $percentual_pendentes = $total_count > 0 ? ($pendentes_count / $total_count) * 100 : 0;
+
+} catch (PDOException $e) {
+    error_log("Erro ao buscar estatísticas: " . $e->getMessage());
+    // Valores permanecem 0 em caso de erro
+}
 
 // Buscar últimos bens cadastrados - CORRIGIDO
 $ultimos_bens = [];
@@ -53,8 +67,9 @@ try {
     $coluna_patrimonio = in_array('numero_patrimonio', $colunas) ? 'numero_patrimonio' : 
                         (in_array('patrimonio', $colunas) ? 'patrimonio' : 'id');
     
-    $coluna_data = in_array('data_cadastro', $colunas) ? 'data_cadastro' : 
-                  (in_array('created_at', $colunas) ? 'created_at' : 'id');
+    $coluna_data = in_array('data_criacao', $colunas) ? 'data_criacao' : 
+                  (in_array('data_cadastro', $colunas) ? 'data_cadastro' : 
+                  (in_array('created_at', $colunas) ? 'created_at' : 'id'));
     
     $query_ultimos = "SELECT id, $coluna_nome as descricao, $coluna_patrimonio as patrimonio, 
                              $coluna_data as data_cadastro, status 
@@ -243,7 +258,7 @@ try {
                                 </h3>
                                 <p class="text-muted mb-2">Bens Localizados</p>
                                 <div class="progress mb-2" style="width: 120px;">
-                                    <div class="progress-bar bg-success" style="width: <?php echo $percentual_localizados; ?>%"></div>
+                                    <div class="progress-bar bg-success" style="width: <?php echo number_format($percentual_localizados, 2); ?>%"></div>
                                 </div>
                                 <small class="text-muted">
                                     <?php echo number_format($percentual_localizados, 1, ',', '.'); ?>% do total
@@ -267,7 +282,7 @@ try {
                                 </h3>
                                 <p class="text-muted mb-2">Bens Pendentes</p>
                                 <div class="progress mb-2" style="width: 120px;">
-                                    <div class="progress-bar bg-warning" style="width: <?php echo $percentual_pendentes; ?>%"></div>
+                                    <div class="progress-bar bg-warning" style="width: <?php echo number_format($percentual_pendentes, 2); ?>%"></div>
                                 </div>
                                 <small class="text-muted">
                                     <?php echo number_format($percentual_pendentes, 1, ',', '.'); ?>% do total

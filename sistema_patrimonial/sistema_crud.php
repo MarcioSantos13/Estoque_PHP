@@ -460,7 +460,7 @@ foreach ($params as $key => $value) {
 }
 
 $stmt_total->execute();
-$total_bens = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'];
+$total_bens = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 $total_paginas = ceil($total_bens / $itens_por_pagina);
 
 // Buscar bem para edição
@@ -481,13 +481,19 @@ if (isset($_GET['auditoria'])) {
     $bem_auditoria = $stmt_auditoria->fetch(PDO::FETCH_ASSOC);
 }
 
-// Buscar estatísticas
+// Buscar estatísticas - CORRIGIDO
 $query_stats = "SELECT 
     COUNT(*) as total,
     SUM(CASE WHEN status = 'Localizado' THEN 1 ELSE 0 END) as localizados,
     SUM(CASE WHEN status = 'Pendente' THEN 1 ELSE 0 END) as pendentes
     FROM bens";
-$stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
+$result_stats = $db->query($query_stats);
+$stats = $result_stats->fetch(PDO::FETCH_ASSOC);
+
+// Garantir que os valores não sejam null
+$stats['total'] = $stats['total'] ?? 0;
+$stats['localizados'] = $stats['localizados'] ?? 0;
+$stats['pendentes'] = $stats['pendentes'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -706,14 +712,14 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Cards de Estatísticas -->
+        <!-- Cards de Estatísticas - CORRIGIDO -->
         <div class="row g-4 mb-4">
             <div class="col-md-4">
                 <div class="card card-dashboard border-start border-primary border-4">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <h3 class="stat-number text-primary"><?php echo number_format($stats['total'], 0, ',', '.'); ?></h3>
+                                <h3 class="stat-number text-primary"><?php echo number_format($stats['total'] ?? 0, 0, ',', '.'); ?></h3>
                                 <p class="text-muted mb-0">Total de Bens</p>
                             </div>
                             <div class="bg-primary bg-opacity-10 rounded-circle p-3">
@@ -729,7 +735,7 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <h3 class="stat-number text-success"><?php echo number_format($stats['localizados'], 0, ',', '.'); ?></h3>
+                                <h3 class="stat-number text-success"><?php echo number_format($stats['localizados'] ?? 0, 0, ',', '.'); ?></h3>
                                 <p class="text-muted mb-0">Bens Localizados</p>
                             </div>
                             <div class="bg-success bg-opacity-10 rounded-circle p-3">
@@ -745,7 +751,7 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <h3 class="stat-number text-warning"><?php echo number_format($stats['pendentes'], 0, ',', '.'); ?></h3>
+                                <h3 class="stat-number text-warning"><?php echo number_format($stats['pendentes'] ?? 0, 0, ',', '.'); ?></h3>
                                 <p class="text-muted mb-0">Bens Pendentes</p>
                             </div>
                             <div class="bg-warning bg-opacity-10 rounded-circle p-3">
@@ -1104,7 +1110,7 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
                                     <th>Descrição</th>
                                     <th class="d-none d-md-table-cell">Localidade</th>
                                     <th>Status</th>
-                                    <th class="d-none d-lg-table-cell">Situação</th>
+                                    <th class="d-none d-lg-table-cell">Responsável</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -1123,8 +1129,8 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
                                                     <?php echo highlightSearchTerm(htmlspecialchars($bem['localidade']), $pesquisa_localidade); ?>
                                                 </small>
                                                 <small class="text-muted d-lg-none">
-                                                    <strong>Situação:</strong> 
-                                                    <?php echo !empty($bem['situacao']) ? htmlspecialchars($bem['situacao']) : 'Não informada'; ?>
+                                                    <strong>Responsável:</strong> 
+                                                    <?php echo !empty($bem['responsavel_bem']) ? htmlspecialchars($bem['responsavel_bem']) : 'Não informado'; ?>
                                                 </small>
                                             </div>
                                         </td>
@@ -1138,7 +1144,7 @@ $stats = $db->query($query_stats)->fetch(PDO::FETCH_ASSOC);
                                         </td>
                                         <td class="d-none d-lg-table-cell">
                                             <small class="text-muted">
-                                                <?php echo !empty($bem['situacao']) ? htmlspecialchars($bem['situacao']) : 'Não informada'; ?>
+                                                <?php echo !empty($bem['responsavel_bem']) ? htmlspecialchars($bem['responsavel_bem']) : 'Não informado'; ?>
                                             </small>
                                         </td>
                                         <td class="action-buttons">

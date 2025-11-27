@@ -168,8 +168,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
             // Garante o número mínimo de colunas
             $linha = array_pad($linha, count($cabecalho), '');
 
-            // ===== CORREÇÃO: MAPEAMENTO CORRETO DOS CAMPOS =====
-            // Baseado na estrutura do CSV: 11 colunas
+            // ===== MAPEAMENTO ATUALIZADO DOS CAMPOS =====
+            // Baseado na estrutura do CSV: 13 colunas
             $unidade_gestora = trim($linha[0] ?? 'CEAD');
             $localidade = trim($linha[1] ?? '');
             $responsavel_localidade = trim($linha[2] ?? '');
@@ -177,13 +177,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
             $descricao = trim($linha[4] ?? 'Item importado');
             $observacoes = trim($linha[5] ?? '');
             $status_csv = trim($linha[6] ?? '');
-            $responsavel_bem = trim($linha[7] ?? '');
-            $auditor = trim($linha[8] ?? '');
-            $data_ultima_vistoria = trim($linha[9] ?? '');
-            $data_vistoria_atual = trim($linha[10] ?? '');
-            $imagem = trim($linha[11] ?? ''); // Campo adicional se existir
+            $situacao_csv = trim($linha[7] ?? ''); // NOVO CAMPO
+            $responsavel_bem = trim($linha[8] ?? '');
+            $auditor = trim($linha[9] ?? '');
+            $data_ultima_vistoria = trim($linha[10] ?? '');
+            $data_vistoria_atual = trim($linha[11] ?? '');
+            $imagem = trim($linha[12] ?? ''); // Campo adicional se existir
 
-            // ===== CORREÇÃO: TRATAMENTO DO STATUS =====
+            // ===== TRATAMENTO DO STATUS =====
             // Na primeira importação, definir como "Pendente" se não especificado
             if (empty($status_csv)) {
                 $status = 'Pendente';
@@ -197,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                 }
             }
 
-            // ===== CORREÇÃO: FORMATAÇÃO DE DATAS =====
+            // ===== FORMATAÇÃO DE DATAS =====
             // Usa a função formatarDataImportacao() que agora está fora do loop
             $data_ultima_vistoria_db = formatarDataImportacao($data_ultima_vistoria);
             $data_vistoria_atual_db = formatarDataImportacao($data_vistoria_atual);
@@ -231,6 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                             descricao = :desc,
                             observacoes = :obs,
                             status = :status,
+                            situacao = :situacao,
                             responsavel_bem = :resp_bem,
                             auditor = :auditor,
                             data_ultima_vistoria = :data_ultima,
@@ -247,6 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                             ':desc' => $descricao,
                             ':obs' => $observacoes,
                             ':status' => $status,
+                            ':situacao' => $situacao_csv,
                             ':resp_bem' => $responsavel_bem,
                             ':auditor' => $auditor,
                             ':data_ultima' => $data_ultima_vistoria_db,
@@ -270,9 +273,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                     // 🔄 INSERIR NOVO REGISTRO
                     $query = "INSERT INTO bens 
                         (unidade_gestora, localidade, responsavel_localidade, numero_patrimonio, 
-                         descricao, observacoes, status, responsavel_bem, auditor,
+                         descricao, observacoes, status, situacao, responsavel_bem, auditor,
                          data_ultima_vistoria, data_vistoria_atual, imagem)
-                        VALUES (:ug, :loc, :resp_loc, :num, :desc, :obs, :status, 
+                        VALUES (:ug, :loc, :resp_loc, :num, :desc, :obs, :status, :situacao, 
                                 :resp_bem, :auditor, :data_ultima, :data_atual, :imagem)";
                     
                     $stmt = $db->prepare($query);
@@ -284,6 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                         ':desc' => $descricao,
                         ':obs' => $observacoes,
                         ':status' => $status,
+                        ':situacao' => $situacao_csv,
                         ':resp_bem' => $responsavel_bem,
                         ':auditor' => $auditor,
                         ':data_ultima' => $data_ultima_vistoria_db,
@@ -543,7 +547,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
             <div class="card-body">
                 <p>Seu arquivo CSV deve seguir esta estrutura com as colunas na ordem abaixo:</p>
                 <div class="csv-structure mb-3">
-                    <strong>Colunas esperadas (11 colunas):</strong><br>
+                    <strong>Colunas esperadas (13 colunas):</strong><br>
                     1. Unidade Gestora<br>
                     2. Localidade<br>
                     3. Responsável Localidade<br>
@@ -551,11 +555,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['arquivo_excel'])) {
                     5. Descrição<br>
                     6. Observação<br>
                     7. Status<br>
-                    8. Responsável pelo bem<br>
-                    9. Auditor<br>
-                    10. Data da ultima vistoria<br>
-                    11. Data da Vistoria atual<br>
-                    12. Imagem do bem (opcional)
+                    8. Situação<br>
+                    9. Responsável pelo bem<br>
+                    10. Auditor<br>
+                    11. Data da ultima vistoria<br>
+                    12. Data da Vistoria atual<br>
+                    13. Imagem do bem (opcional)
                 </div>
                 <div class="alert alert-info">
                     <i class="fas fa-lightbulb me-2"></i>
