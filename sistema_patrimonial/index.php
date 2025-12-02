@@ -5,19 +5,22 @@ require_once 'includes/init.php';
 Auth::protegerPagina();
 
 // Função para formatar números no padrão brasileiro - CORRIGIDA
-function formatarNumero($numero) {
+function formatarNumero($numero)
+{
     $numero = $numero ?? 0; // Converte null para 0
     return number_format(floatval($numero), 0, ',', '.');
 }
 
 // Função para formatar data no padrão brasileiro
-function formatarData($data) {
+function formatarData($data)
+{
     if (empty($data) || $data == '0000-00-00') return 'N/A';
     return date('d/m/Y', strtotime($data));
 }
 
 // Função para abreviar texto longo
-function abreviarTexto($texto, $limite = 30) {
+function abreviarTexto($texto, $limite = 30)
+{
     if (strlen($texto) <= $limite) return $texto;
     return substr($texto, 0, $limite) . '...';
 }
@@ -47,7 +50,6 @@ try {
     // Calcular percentuais - CORRIGIDO
     $percentual_localizados = $total_count > 0 ? ($localizados_count / $total_count) * 100 : 0;
     $percentual_pendentes = $total_count > 0 ? ($pendentes_count / $total_count) * 100 : 0;
-
 } catch (PDOException $e) {
     error_log("Erro ao buscar estatísticas: " . $e->getMessage());
     // Valores permanecem 0 em caso de erro
@@ -59,31 +61,26 @@ try {
     // Primeiro, vamos descobrir quais colunas existem na tabela
     $stmt = $db->query("DESCRIBE bens");
     $colunas = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    
+
     // Definir colunas baseadas no que existe
-    $coluna_nome = in_array('descricao', $colunas) ? 'descricao' : 
-                   (in_array('nome', $colunas) ? 'nome' : 'id');
-    
-    $coluna_patrimonio = in_array('numero_patrimonio', $colunas) ? 'numero_patrimonio' : 
-                        (in_array('patrimonio', $colunas) ? 'patrimonio' : 'id');
-    
-    $coluna_data = in_array('data_criacao', $colunas) ? 'data_criacao' : 
-                  (in_array('data_cadastro', $colunas) ? 'data_cadastro' : 
-                  (in_array('created_at', $colunas) ? 'created_at' : 'id'));
-    
+    $coluna_nome = in_array('descricao', $colunas) ? 'descricao' : (in_array('nome', $colunas) ? 'nome' : 'id');
+
+    $coluna_patrimonio = in_array('numero_patrimonio', $colunas) ? 'numero_patrimonio' : (in_array('patrimonio', $colunas) ? 'patrimonio' : 'id');
+
+    $coluna_data = in_array('data_criacao', $colunas) ? 'data_criacao' : (in_array('data_cadastro', $colunas) ? 'data_cadastro' : (in_array('created_at', $colunas) ? 'created_at' : 'id'));
+
     $query_ultimos = "SELECT id, $coluna_nome as descricao, $coluna_patrimonio as patrimonio, 
                              $coluna_data as data_cadastro, status 
                       FROM bens 
                       ORDER BY $coluna_data DESC 
                       LIMIT 5";
     $ultimos_bens = $db->query($query_ultimos)->fetchAll(PDO::FETCH_ASSOC);
-    
 } catch (PDOException $e) {
     // Se ainda houver erro, usar uma consulta mais simples
     error_log("Erro ao buscar últimos bens: " . $e->getMessage());
     $query_ultimos = "SELECT id, status FROM bens ORDER BY id DESC LIMIT 5";
     $ultimos_bens = $db->query($query_ultimos)->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // Adicionar campos padrão para evitar erros no template
     foreach ($ultimos_bens as &$bem) {
         $bem['descricao'] = "Bem #" . $bem['id'];
@@ -96,6 +93,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,71 +108,80 @@ try {
             --warning-color: #f39c12;
             --danger-color: #e74c3c;
         }
-        
+
         .gradient-bg {
             background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
         }
-        
+
         .card-hover {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
         }
-        
+
         .stat-card {
             border-left: 4px solid;
             border-radius: 8px;
         }
-        
-        .stat-card.total { border-left-color: var(--secondary-color); }
-        .stat-card.localizados { border-left-color: var(--success-color); }
-        .stat-card.pendentes { border-left-color: var(--warning-color); }
-        
+
+        .stat-card.total {
+            border-left-color: var(--secondary-color);
+        }
+
+        .stat-card.localizados {
+            border-left-color: var(--success-color);
+        }
+
+        .stat-card.pendentes {
+            border-left-color: var(--warning-color);
+        }
+
         .progress {
             height: 8px;
             border-radius: 10px;
         }
-        
+
         .quick-action-btn {
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-        
+
         .quick-action-btn:hover {
             border-color: var(--secondary-color);
             transform: scale(1.05);
         }
-        
+
         .user-welcome {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
         }
-        
+
         .status-badge {
             font-size: 0.7em;
             padding: 0.25em 0.6em;
         }
-        
+
         @media (max-width: 768px) {
             .header-content {
                 text-align: center;
             }
-            
+
             .user-stats {
                 justify-content: center !important;
                 margin-top: 1rem;
             }
-            
+
             .quick-action-btn {
                 padding: 1rem !important;
             }
         }
     </style>
 </head>
+
 <body class="bg-light">
     <!-- Header Modernizado -->
     <header class="gradient-bg text-white shadow-lg">
@@ -315,6 +322,27 @@ try {
                                     <small class="text-muted mt-1">Cadastrar e editar</small>
                                 </a>
                             </div>
+
+
+                            <!-- No index.php, na seção de Ações Rápidas -->
+                            <div class="col-sm-6 col-md-4">
+                                <a href="crud_usuarios.php" class="btn btn-outline-info quick-action-btn w-100 py-4 d-flex flex-column">
+                                    <i class="bi bi-people-fill fs-1 mb-2"></i>
+                                    <span class="fw-medium">Gerenciar Usuários</span>
+                                    <small class="text-muted mt-1">Administrar acesso</small>
+                                </a>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
                             <div class="col-sm-6 col-md-4">
                                 <a href="auditar.php" class="btn btn-outline-success quick-action-btn w-100 py-4 d-flex flex-column">
                                     <i class="bi bi-search fs-1 mb-2"></i>
@@ -400,11 +428,11 @@ try {
                         <?php endif; ?>
                     </div>
                     <?php if (count($ultimos_bens) > 0): ?>
-                    <div class="card-footer bg-white border-0 py-3">
-                        <a href="sistema_crud.php" class="btn btn-outline-primary w-100">
-                            <i class="bi bi-list-ul me-2"></i>Ver Todos os Bens
-                        </a>
-                    </div>
+                        <div class="card-footer bg-white border-0 py-3">
+                            <a href="sistema_crud.php" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-list-ul me-2"></i>Ver Todos os Bens
+                            </a>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -450,9 +478,9 @@ try {
                 elementoHora.textContent = horaFormatada;
             }
         }
-        
+
         setInterval(atualizarHora, 1000);
-        
+
         // Adicionar efeitos de interação
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card-hover');
@@ -460,7 +488,7 @@ try {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-5px)';
                 });
-                
+
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0)';
                 });
@@ -468,4 +496,5 @@ try {
         });
     </script>
 </body>
+
 </html>
